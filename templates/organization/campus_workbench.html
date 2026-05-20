@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ campus.name }}工作台</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, "Microsoft YaHei", sans-serif;
+            background: #f3f6fb;
+            color: #1f2937;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 980px;
+            margin: 48px auto;
+            padding: 0 24px;
+        }
+
+        .panel {
+            padding: 28px;
+            background: #ffffff;
+            border: 1px solid #dbe3ef;
+            border-radius: 8px;
+            box-shadow: 0 12px 30px rgba(31, 41, 55, 0.08);
+        }
+
+        h1 {
+            margin: 0 0 22px;
+            font-size: 28px;
+            color: #12355b;
+        }
+
+        .workbench-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 14px;
+            margin: 18px 0 20px;
+        }
+
+        .workbench-item {
+            padding: 18px;
+            border: 1px solid #dbe3ef;
+            border-radius: 8px;
+            background: #f8fafc;
+            font-size: 16px;
+        }
+
+        .workbench-item strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #12355b;
+            font-size: 17px;
+        }
+
+        a {
+            display: inline-block;
+            margin-right: 10px;
+            padding: 10px 16px;
+            border-radius: 6px;
+            background: #1d4ed8;
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        a:hover {
+            background: #1e40af;
+        }
+
+        .quiet-link {
+            background: #64748b;
+        }
+
+        .quiet-link:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <section class="panel">
+            <h1>当前校区：{{ campus.name }}</h1>
+            <div class="workbench-grid">
+                <div class="workbench-item"><strong>今日课程</strong>占位</div>
+                <div class="workbench-item"><strong>学生管理</strong>占位</div>
+                <div class="workbench-item"><strong>班级管理</strong>占位</div>
+                <div class="workbench-item"><strong>教师管理</strong>占位</div>
+                <div class="workbench-item"><strong>考勤与课时</strong>占位</div>
+            </div>
+            <a class="quiet-link" href="{% url 'dashboard' %}">返回首页</a>
+            <a href="{% url 'logout' %}">退出登录</a>
+        </section>
+    </main>
+</body>
+</html>

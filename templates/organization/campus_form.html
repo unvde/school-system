@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }}</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, "Microsoft YaHei", sans-serif;
+            background: #f3f6fb;
+            color: #1f2937;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 680px;
+            margin: 48px auto;
+            padding: 0 24px;
+        }
+
+        .form-panel {
+            padding: 32px;
+            background: #ffffff;
+            border: 1px solid #dbe3ef;
+            border-radius: 8px;
+            box-shadow: 0 12px 30px rgba(31, 41, 55, 0.08);
+        }
+
+        h1 {
+            margin: 0 0 24px;
+            font-size: 28px;
+            color: #12355b;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        input,
+        select {
+            width: 100%;
+            min-height: 42px;
+            margin-bottom: 18px;
+            padding: 9px 11px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 15px;
+            background: #ffffff;
+        }
+
+        input[type="checkbox"] {
+            width: auto;
+            min-height: 0;
+            margin-right: 8px;
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .checkbox-row label {
+            margin: 0;
+        }
+
+        .errorlist {
+            margin: -8px 0 14px;
+            padding-left: 20px;
+            color: #b91c1c;
+            font-size: 14px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        button,
+        a {
+            display: inline-block;
+            padding: 10px 18px;
+            border: 0;
+            border-radius: 6px;
+            background: #1d4ed8;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button:hover,
+        a:hover {
+            background: #1e40af;
+        }
+
+        .plain-link {
+            background: #64748b;
+        }
+
+        .plain-link:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <section class="form-panel">
+            <h1>{{ page_title }}</h1>
+
+            <form method="post">
+                {% csrf_token %}
+
+                {{ form.name.errors }}
+                <label for="{{ form.name.id_for_label }}">校区名称</label>
+                {{ form.name }}
+
+                {{ form.address.errors }}
+                <label for="{{ form.address.id_for_label }}">地址</label>
+                {{ form.address }}
+
+                {{ form.phone.errors }}
+                <label for="{{ form.phone.id_for_label }}">联系电话</label>
+                {{ form.phone }}
+
+                {{ form.manager.errors }}
+                <label for="{{ form.manager.id_for_label }}">校区长</label>
+                {{ form.manager }}
+
+                {{ form.is_active.errors }}
+                <div class="checkbox-row">
+                    {{ form.is_active }}
+                    <label for="{{ form.is_active.id_for_label }}">启用状态</label>
+                </div>
+
+                <div class="buttons">
+                    <button type="submit">{{ submit_text }}</button>
+                    <a class="plain-link" href="{% url 'campus_list' %}">返回系统设置</a>
+                </div>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

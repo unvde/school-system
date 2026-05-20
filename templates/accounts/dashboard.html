@@ -19,33 +19,69 @@
 
         .page {
             width: 100%;
-            max-width: 760px;
-            margin: 72px auto;
+            max-width: 980px;
+            margin: 48px auto;
             padding: 0 24px;
         }
 
-        .content {
-            padding: 32px;
+        .panel {
+            padding: 28px;
             background: #ffffff;
             border: 1px solid #dbe3ef;
             border-radius: 8px;
             box-shadow: 0 12px 30px rgba(31, 41, 55, 0.08);
         }
 
+        h1 {
+            margin: 0 0 18px;
+            font-size: 28px;
+            color: #12355b;
+        }
+
+        h2 {
+            margin: 28px 0 14px;
+            font-size: 20px;
+            color: #12355b;
+        }
+
         p {
-            margin: 0 0 16px;
-            font-size: 18px;
+            margin: 0 0 12px;
+            font-size: 17px;
             line-height: 1.6;
+        }
+
+        .campus-grid,
+        .workbench-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 14px;
+            margin-top: 14px;
+        }
+
+        .campus-card,
+        .workbench-item {
+            padding: 18px;
+            border: 1px solid #dbe3ef;
+            border-radius: 8px;
+            background: #f8fafc;
+        }
+
+        .campus-card strong,
+        .workbench-item strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #12355b;
+            font-size: 17px;
         }
 
         a {
             display: inline-block;
             margin-top: 10px;
-            padding: 10px 18px;
+            padding: 10px 16px;
             border-radius: 6px;
             background: #1d4ed8;
             color: #ffffff;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             text-decoration: none;
         }
@@ -53,14 +89,88 @@
         a:hover {
             background: #1e40af;
         }
+
+        .quiet-link {
+            background: #64748b;
+        }
+
+        .quiet-link:hover {
+            background: #475569;
+        }
+
+        .settings-link {
+            margin-left: 10px;
+            padding: 8px 12px;
+            background: transparent;
+            border: 1px solid #94a3b8;
+            color: #334155;
+        }
+
+        .settings-link:hover {
+            background: #e2e8f0;
+        }
+
+        .note {
+            color: #64748b;
+            font-size: 15px;
+        }
     </style>
 </head>
 <body>
     <main class="page">
-        <section class="content">
+        <section class="panel">
+            <h1>教师端后台首页</h1>
             <p>当前登录用户：{{ request.user.username }}</p>
-            <p>当前页面：教师端后台首页（占位）</p>
-            <a href="{% url 'logout' %}">退出登录</a>
+            <p>当前角色：{{ role_display }}</p>
+            <p>当前校区：{{ campus_display }}</p>
+
+            {% if dashboard_mode == "principal" %}
+                <h2>选择校区进入日常工作台</h2>
+                {% if selected_campus %}
+                    <p class="note">当前已选择：{{ selected_campus.name }}</p>
+                {% else %}
+                    <p class="note">请选择一个校区开始处理课程、学生、班级、教师和考勤相关工作。</p>
+                {% endif %}
+
+                {% if active_campuses %}
+                    <div class="campus-grid">
+                        {% for campus in active_campuses %}
+                            <div class="campus-card">
+                                <strong>{{ campus.name }}</strong>
+                                <span>{{ campus.address|default:"地址未设置" }}</span>
+                                <br>
+                                <a href="{% url 'campus_workbench' campus.pk %}">进入校区工作台</a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p>暂无启用校区，请先在系统设置中创建校区。</p>
+                {% endif %}
+
+                <a class="quiet-link" href="{% url 'dashboard' %}?scope=all">全部校区</a>
+                <a class="settings-link" href="{% url 'campus_list' %}">系统设置 / 校区管理</a>
+            {% elif dashboard_mode == "campus_manager" %}
+                {% if manager_campus %}
+                    <h2>{{ manager_campus.name }}工作台</h2>
+                    <div class="workbench-grid">
+                        <div class="workbench-item"><strong>今日课程</strong>占位</div>
+                        <div class="workbench-item"><strong>学生管理</strong>占位</div>
+                        <div class="workbench-item"><strong>班级管理</strong>占位</div>
+                        <div class="workbench-item"><strong>教师管理</strong>占位</div>
+                        <div class="workbench-item"><strong>考勤与课时</strong>占位</div>
+                    </div>
+                {% else %}
+                    <p>当前账号尚未设置所属校区，请联系校长在系统设置中分配校区。</p>
+                {% endif %}
+            {% elif dashboard_mode == "teacher" %}
+                <h2>教师工作台</h2>
+                <p>这里将显示教师日常工作内容。</p>
+                <p class="note">后续将展示已分配班级、课程安排和学生相关信息。</p>
+            {% else %}
+                <p>当前账号尚未设置角色，请联系管理员完成账号配置。</p>
+            {% endif %}
+
+            <a class="quiet-link" href="{% url 'logout' %}">退出登录</a>
         </section>
     </main>
 </body>

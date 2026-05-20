@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统设置：校区管理</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, "Microsoft YaHei", sans-serif;
+            background: #f3f6fb;
+            color: #1f2937;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 1100px;
+            margin: 48px auto;
+            padding: 0 24px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 28px;
+            color: #12355b;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #ffffff;
+            border: 1px solid #dbe3ef;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(31, 41, 55, 0.08);
+        }
+
+        th,
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #e5edf7;
+            text-align: left;
+            font-size: 15px;
+        }
+
+        th {
+            background: #eff6ff;
+            color: #12355b;
+            font-weight: 700;
+        }
+
+        tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .actions {
+            margin-top: 20px;
+        }
+
+        a {
+            display: inline-block;
+            padding: 9px 14px;
+            border-radius: 6px;
+            background: #1d4ed8;
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        a:hover {
+            background: #1e40af;
+        }
+
+        .plain-link {
+            background: #64748b;
+        }
+
+        .plain-link:hover {
+            background: #475569;
+        }
+
+        .empty {
+            padding: 28px;
+            background: #ffffff;
+            border: 1px solid #dbe3ef;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <div class="header">
+            <h1>系统设置：校区管理</h1>
+            <a href="{% url 'campus_create' %}">新建校区</a>
+        </div>
+
+        {% if campuses %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>校区名称</th>
+                        <th>地址</th>
+                        <th>联系电话</th>
+                        <th>校区长</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for campus in campuses %}
+                        <tr>
+                            <td>{{ campus.name }}</td>
+                            <td>{{ campus.address|default:"未设置" }}</td>
+                            <td>{{ campus.phone|default:"未设置" }}</td>
+                            <td>{{ campus.manager.username|default:"未设置" }}</td>
+                            <td>{% if campus.is_active %}启用{% else %}停用{% endif %}</td>
+                            <td><a href="{% url 'campus_edit' campus.pk %}">编辑</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="empty">暂无校区，请先新增校区。</div>
+        {% endif %}
+
+        <div class="actions">
+            <a class="plain-link" href="{% url 'dashboard' %}">返回首页</a>
+        </div>
+    </main>
+</body>
+</html>

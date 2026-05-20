@@ -24,4 +24,8 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('dashboard/', views.dashboard_view, name='dashboard'),
+    path('dashboard/campus/<int:campus_id>/', views.campus_workbench_view, name='campus_workbench'),
+    path('dashboard/campuses/', views.campus_list_view, name='campus_list'),
+    path('dashboard/campuses/create/', views.campus_create_view, name='campus_create'),
+    path('dashboard/campuses/<int:pk>/edit/', views.campus_edit_view, name='campus_edit'),
 ]
